@@ -2,7 +2,7 @@ import unittest
 from data_aggregate import DataAggregate
 
 
-class DataAggregateTest(unittest.TestCase):
+class TestDataAggregate(unittest.TestCase):
     def test_get_film_id(self):
         data_aggregate = DataAggregate('https://localhost:9000/films')
         self.assertEqual('1234', data_aggregate.get_film_id('https://localhost:9000/films/1234'))
