@@ -9,6 +9,7 @@ LOG = {
 REDIS = {
     'host': os.environ.get('REDIS_HOST', 'localhost'),
     'port': os.environ.get('REDIS_PORT', 6379),
+    'timeout': os.environ.get('REDIS_TIMEOUT_SEC', 1.0),
     'key_all_films': os.environ.get('REDIS_KEY_ALL_FILMS', 'all')
 }
 
@@ -18,5 +19,6 @@ GHIBLI = {
     'people_path': os.environ.get('GHIBLI_PEOPLE_PATH', 'people'),
     'id_key': os.environ.get('GHIBLI_ID_KEY', 'id'),
     'films_key': os.environ.get('GHIBLI_FILMS_KEY', 'films'),
-    'people_key': os.environ.get('GHIBLI_PEOPLE_KEY', 'people')
+    'people_key': os.environ.get('GHIBLI_PEOPLE_KEY', 'people'),
+    'timeout': os.environ.get('GHIBLI_TIMEOUT_SEC', 1.0)
 }

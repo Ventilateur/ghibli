@@ -1,7 +1,28 @@
 version: '3'
 
 services:
+
   redis:
     image: redis:6-alpine
     ports:
       - 6379:6379
+
+  data-collector:
+    build:
+      context: data-collector
+    image: ghibli/data-collector:latest
+    environment:
+      REDIS_HOST: 'redis'
+      REDIS_PORT: 6379
+    depends_on:
+      - redis
+
+  api:
+    build:
+      context: api
+    image: ghibli/api:latest
+    environment:
+      REDIS_HOST: 'redis'
+      REDIS_PORT: 6379
+    depends_on:
+      - redis

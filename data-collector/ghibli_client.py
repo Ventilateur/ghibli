@@ -1,38 +1,37 @@
 import requests
 import logging
-import time
+from functools import wraps
 
 logger = logging.getLogger(__name__)
 
 
+def log_err(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        try:
+            return f(*args, **kwargs)
+        except requests.exceptions.Timeout or requests.exceptions.ConnectionError as e:
+            logger.error(f'{f.__name__}: Cannot connect to Ghibli API: {e}')
+            raise ConnectionError
+    return wrapper
+
+
 class GhibliClient:
 
-    def __init__(self, ghibli_url, films_path, people_path, scheme='https'):
-        self.scheme = scheme
+    def __init__(self, ghibli_url, films_path, people_path, timeout, scheme='https'):
+        self.timeout = timeout
         self.films_url = f'{scheme}://{ghibli_url}/{films_path}'
         self.people_url = f'{scheme}://{ghibli_url}/{people_path}'
         logger.info(f'Ghibli http client configured: films at {self.films_url}, people at {self.people_url}')
 
+    @log_err
     def get_films(self):
-        logger.info(f'Getting films at {self.films_url}')
-        start = time.time_ns()
-        films = requests.get(self.films_url).json()
-        end = time.time_ns()
-        logger.info(f'Got {len(films)} films, took {(end - start)/10e5}ms')
+        films = requests.get(self.films_url, timeout=self.timeout).json()
+        logger.info(f'Got {len(films)} films')
         return films
 
+    @log_err
     def get_people(self):
-        logger.info(f'Getting people at {self.films_url}')
-        start = time.time_ns()
-        people = requests.get(self.people_url).json()
-        end = time.time_ns()
-        logger.info(f'Got {len(people)} people, took {(end - start)/10e5}ms')
+        people = requests.get(self.people_url, timeout=self.timeout).json()
+        logger.info(f'Got {len(people)} people')
         return people
-
-
-if __name__ == "__main__":
-    logger = logging.getLogger()
-    logging.basicConfig(level=logging.INFO)
-    client = GhibliClient('ghibliapi.herokuapp.com', 'films', 'people')
-    print(client.get_films())
-    print(client.get_people())

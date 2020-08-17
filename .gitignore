@@ -1,4 +1,2 @@
 /venv
 **/.idea
-/api/redis-client
-/data-collector/redis_client

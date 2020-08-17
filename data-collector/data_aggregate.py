@@ -29,10 +29,3 @@ class DataAggregate:
                     film_map[film_id][self.people_key].append(people)
 
         return film_map
-
-
-if __name__ == '__main__':
-    from ghibli_client import GhibliClient
-    client = GhibliClient('ghibliapi.herokuapp.com', 'films', 'people')
-    aggregate = DataAggregate(client.films_url)
-    print(aggregate.aggregate(client.get_films(), client.get_people()))
