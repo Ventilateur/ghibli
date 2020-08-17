@@ -10,10 +10,10 @@ def log_err(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         try:
-            return f(*args, **kwargs), 200
-        except redis.TimeoutError or redis.ConnectionError as e:
+            return f(*args, **kwargs)
+        except redis.RedisError as e:
             logger.error(f'Cannot connect to redis: {e}')
-            return None, 500
+            raise ConnectionError
     return wrapper
 
 
@@ -23,7 +23,6 @@ class Controller:
         self.redis = redis.Redis(host=host, port=port, socket_timeout=timeout)
         self.key_all_films = key_all_films
         logger.info(f'Redis configured: {host}:{port}')
-        self.ping()
 
     @log_err
     def get_all(self):

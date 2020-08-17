@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from controller import Controller
+from http import HTTPStatus
 import config
 
 app = Flask(__name__)
@@ -14,22 +15,31 @@ controller = Controller(
 
 @app.route('/movies', methods=['GET'])
 def get_movies():
-    films, code = controller.get_all()
-    return jsonify(films), code
+    try:
+        films = controller.get_all()
+        return jsonify(films), HTTPStatus.OK
+    except ConnectionError:
+        return 'INTERNAL_SERVER_ERROR', HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/movies/<uid>', methods=['GET'])
 def get_movie(uid):
-    film, code = controller.get_film(str(uid))
-    return jsonify(film), code
+    try:
+        film = controller.get_film(str(uid))
+        return jsonify(film), HTTPStatus.OK
+    except ConnectionError:
+        return 'INTERNAL_SERVER_ERROR', HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/_/readiness', methods=['GET'])
 def is_ready():
-    ready, code = controller.ping()
-    return jsonify(ready), code
+    try:
+        controller.ping()
+        return 'OK', HTTPStatus.OK
+    except ConnectionError:
+        return 'INTERNAL_SERVER_ERROR', HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/_/liveness', methods=['GET'])
 def is_alive():
-    return '', 200
+    return 'OK', HTTPStatus.OK
