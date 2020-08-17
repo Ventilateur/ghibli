@@ -1,5 +1,10 @@
 import os
 
+FLASK = {
+    'host': os.environ.get('FLASK_HOST', 'localhost'),
+    'port': os.environ.get('FLASK_PORT', 5000),
+}
+
 LOG = {
     'level': os.environ.get('LOG_LEVEL', 'INFO')
 }

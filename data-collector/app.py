@@ -1,16 +1,15 @@
 import config
 import time
 import logging
-from data_aggregate import DataAggregate
+import data_aggregate
 from ghibli_client import GhibliClient
 from database import Database
 
 logging.basicConfig(level=config.LOG['level'])
 
 ghibli = GhibliClient(
-    config.GHIBLI['url'],
-    config.GHIBLI['films_path'],
-    config.GHIBLI['people_path'],
+    config.GHIBLI['films_url'],
+    config.GHIBLI['people_url'],
     config.GHIBLI['timeout']
 )
 
@@ -21,19 +20,12 @@ db = Database(
     config.REDIS['key_all_films']
 )
 
-aggregator = DataAggregate(
-    ghibli.films_url,
-    config.GHIBLI['id_key'],
-    config.GHIBLI['films_key'],
-    config.GHIBLI['people_key']
-)
-
 
 def collect_data():
     try:
         films = ghibli.get_films()
         people = ghibli.get_people()
-        films_map = aggregator.aggregate(films, people)
+        films_map = data_aggregate.aggregate(films, people)
         db.push(films_map)
     except ConnectionError:
         # We have already logged errors before

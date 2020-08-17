@@ -14,11 +14,7 @@ REDIS = {
 }
 
 GHIBLI = {
-    'url': os.environ.get('GHIBLI_URL', 'ghibliapi.herokuapp.com'),
-    'films_path': os.environ.get('GHIBLI_FILMS_PATH', 'films'),
-    'people_path': os.environ.get('GHIBLI_PEOPLE_PATH', 'people'),
-    'id_key': os.environ.get('GHIBLI_ID_KEY', 'id'),
-    'films_key': os.environ.get('GHIBLI_FILMS_KEY', 'films'),
-    'people_key': os.environ.get('GHIBLI_PEOPLE_KEY', 'people'),
+    'films_url': os.environ.get('GHIBLI_FILMS_URL', 'ghibliapi.herokuapp.com/films'),
+    'people_url': os.environ.get('GHIBLI_PEOPLE_URL', 'ghibliapi.herokuapp.com/people'),
     'timeout': os.environ.get('GHIBLI_TIMEOUT_SEC', 1.0)
 }

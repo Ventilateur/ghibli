@@ -43,3 +43,10 @@ def is_ready():
 @app.route('/_/liveness', methods=['GET'])
 def is_alive():
     return 'OK', HTTPStatus.OK
+
+
+if __name__ == '__main__':
+    app.run(
+        config.FLASK['host'],
+        config.FLASK['port']
+    )

@@ -18,10 +18,13 @@ def log_err(f):
 
 class GhibliClient:
 
-    def __init__(self, ghibli_url, films_path, people_path, timeout, scheme='https'):
+    film_fields = ('id', 'title', 'description', 'director', 'producer', 'release_date', 'rt_score')
+    people_fields = ('id', 'name', 'gender', 'age', 'eye_color', 'hair_color', 'films')
+
+    def __init__(self, films_url, people_url, timeout, scheme='https'):
         self.timeout = timeout
-        self.films_url = f'{scheme}://{ghibli_url}/{films_path}'
-        self.people_url = f'{scheme}://{ghibli_url}/{people_path}'
+        self.films_url = f'{scheme}://{films_url}?fields={",".join(GhibliClient.film_fields)}'
+        self.people_url = f'{scheme}://{people_url}?fields={",".join(GhibliClient.people_fields)}'
         logger.info(f'Ghibli http client configured: films at {self.films_url}, people at {self.people_url}')
 
     @log_err
