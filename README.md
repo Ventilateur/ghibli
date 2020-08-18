@@ -1,6 +1,7 @@
 # Ghibli movie list
 
 ## Requirements
+cf. your document. :)
 
 ## Solution
 - Because we cannot call Ghibli API with each request, we need to have a cache system.
