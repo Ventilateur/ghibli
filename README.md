@@ -32,3 +32,4 @@ but it looks like an overkill for now.
 - The config system needs a rework, the current one is cumbersome.
 - Make redis persist data, in case Ghibli is down and redis restarts.
 - Allow logs to be redirected to file.
+- Make smaller images, maybe use python-slim.
